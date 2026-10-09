@@ -1,0 +1,45 @@
+program {
+    return(cantidadDeSectoresSinCultivar())
+}
+
+function cantidadDeSectoresSinCultivar(){
+    /* PROPÓSITO: Contar columnas sin plantas ni agua.
+       PARÁMETROS: Ninguno. PRECONDICIONES: Modelo válido. TIPO: Número.
+       No modifica bolitas. Cada columna se cuenta una sola vez. */
+    IrAlBorde(Oeste)
+    cantidad := unoSiColumnaSinCultivar()
+    while (puedeMover(Este)){
+        Mover(Este)
+        cantidad := cantidad + unoSiColumnaSinCultivar()
+    }
+    return(cantidad)
+}
+
+function unoSiColumnaSinCultivar(){
+    /* PROPÓSITO: Devolver 1 si toda la columna carece de planta y riego.
+       PARÁMETROS: Ninguno. PRECONDICIONES: Modelo válido. TIPO: Número.
+       Negro o rojo solos no cuentan como planta ni agua.
+       Al terminar la función el entorno restaura el cabezal del llamador. */
+    IrAlBorde(Sur)
+    sinCultivar := not hayPlanta() && not hayBolitas(Azul)
+    while (puedeMover(Norte)){
+        Mover(Norte)
+        sinCultivar := sinCultivar && not hayPlanta() && not hayBolitas(Azul)
+    }
+    return(choose
+        1 when (sinCultivar)
+        0 otherwise
+    )
+}
+
+function hayPlanta(){
+    /* PROPÓSITO: Reconocer una planta válida en la celda. TIPO: Booleano.
+       PARÁMETROS: Ninguno. PRECONDICIONES: Ninguna. */
+    return(nroBolitas(Verde) == 1 || nroBolitas(Verde) == 3 || nroBolitas(Verde) == 5)
+}
+
+function hayPlantaPlagada(){
+    /* PROPÓSITO: Reconocer una planta afectada. TIPO: Booleano.
+       PARÁMETROS: Ninguno. PRECONDICIONES: Modelo válido del jardín. */
+    return(hayPlanta() && hayBolitas(Negro))
+}
