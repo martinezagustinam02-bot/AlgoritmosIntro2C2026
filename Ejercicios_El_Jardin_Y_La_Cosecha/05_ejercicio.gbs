@@ -1,0 +1,50 @@
+program {
+    IrAParcelaConFrutosMasAlSur()
+}
+
+procedure IrAParcelaConFrutosMasAlSur(){
+    /* PROPÓSITO: Ir a la planta madura de la fila más al Sur;
+       si hay varias en esa fila, elegir la más al Oeste. No cambia bolitas.
+       PARÁMETROS: Ninguno.
+       PRECONDICIONES: Modelo válido y existe al menos una planta con 5 verdes.
+       La salud no es filtro: la consigna sólo exige frutos maduros.
+       Sin una planta madura, el recorrido termina en NE sin salir del tablero,
+       pero no satisface el propósito (entrada fuera de precondición). */
+    IrAPrimeraCeldaEnUnRecorridoAl_Y_(Este, Norte)
+    while (not hayFrutosMaduros() && haySiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)){
+        IrASiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)
+    }
+}
+
+function hayFrutosMaduros(){
+    /* PROPÓSITO: Indicar si hay planta madura. TIPO: Booleano.
+       PARÁMETROS: Ninguno. PRECONDICIONES: Ninguna. */
+    return(nroBolitas(Verde) == 5)
+}
+
+procedure IrAPrimeraCeldaEnUnRecorridoAl_Y_(dirPrincipal, dirSecundaria){
+    /* PROPÓSITO: Ir a la esquina inicial del recorrido.
+       PARÁMETROS: dirPrincipal y dirSecundaria: Dirección.
+       PRECONDICIONES: Direcciones perpendiculares. */
+    IrAlBorde(opuesto(dirPrincipal))
+    IrAlBorde(opuesto(dirSecundaria))
+}
+
+function haySiguienteCeldaEnUnRecorridoAl_Y_(dirPrincipal, dirSecundaria){
+    /* PROPÓSITO: Indicar si queda una celda por visitar. TIPO: Booleano.
+       PARÁMETROS: dirPrincipal y dirSecundaria: Dirección.
+       PRECONDICIONES: Direcciones perpendiculares. */
+    return(puedeMover(dirPrincipal) || puedeMover(dirSecundaria))
+}
+
+procedure IrASiguienteCeldaEnUnRecorridoAl_Y_(dirPrincipal, dirSecundaria){
+    /* PROPÓSITO: Avanzar una celda del recorrido.
+       PARÁMETROS: dirPrincipal y dirSecundaria: Dirección.
+       PRECONDICIONES: Direcciones perpendiculares y hay siguiente celda. */
+    if (puedeMover(dirPrincipal)){
+        Mover(dirPrincipal)
+    }else{
+        IrAlBorde(opuesto(dirPrincipal))
+        Mover(dirSecundaria)
+    }
+}

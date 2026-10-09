@@ -1,0 +1,62 @@
+program {
+    return(cantidadDePlantasPlagadas())
+}
+
+function cantidadDePlantasPlagadas(){
+    /* PROPÓSITO: Contar plantas plagadas de los tres estados.
+       PARÁMETROS: Ninguno. PRECONDICIONES: Modelo válido. TIPO: Número.
+       Reutiliza cantidadDePlantas; no cuenta una marca negra sin planta. */
+    return(cantidadDePlantas(1, True) + cantidadDePlantas(3, True) + cantidadDePlantas(5, True))
+}
+
+function cantidadDePlantas(estadoDeCrecimiento, conPlaga){
+    /* PROPÓSITO: Contar las plantas del estado y salud indicados.
+       PARÁMETROS: estadoDeCrecimiento: Número (1, 3 o 5).
+                   conPlaga: Booleano (True: plagadas; False: saludables).
+       PRECONDICIONES: Modelo válido y estado 1, 3 o 5. TIPO: Número.
+       No cambia bolitas; el entorno restaura el cabezal al salir de la función. */
+    IrAPrimeraCeldaEnUnRecorridoAl_Y_(Este, Norte)
+    cantidad := unoSiHayPlantaDeEstado_YPlaga_(estadoDeCrecimiento, conPlaga)
+    while (haySiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)){
+        IrASiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)
+        cantidad := cantidad + unoSiHayPlantaDeEstado_YPlaga_(estadoDeCrecimiento, conPlaga)
+    }
+    return(cantidad)
+}
+
+function unoSiHayPlantaDeEstado_YPlaga_(estadoDeCrecimiento, conPlaga){
+    /* PROPÓSITO: Devolver 1 si la celda coincide, 0 en otro caso.
+       PARÁMETROS: estadoDeCrecimiento: Número; conPlaga: Booleano.
+       PRECONDICIONES: Modelo válido y estado 1, 3 o 5. TIPO: Número. */
+    return(choose
+        1 when (nroBolitas(Verde) == estadoDeCrecimiento && hayBolitas(Negro) == conPlaga)
+        0 otherwise
+    )
+}
+
+procedure IrAPrimeraCeldaEnUnRecorridoAl_Y_(dirPrincipal, dirSecundaria){
+    /* PROPÓSITO: Ir a la esquina inicial del recorrido.
+       PARÁMETROS: dirPrincipal y dirSecundaria: Dirección.
+       PRECONDICIONES: Direcciones perpendiculares. */
+    IrAlBorde(opuesto(dirPrincipal))
+    IrAlBorde(opuesto(dirSecundaria))
+}
+
+function haySiguienteCeldaEnUnRecorridoAl_Y_(dirPrincipal, dirSecundaria){
+    /* PROPÓSITO: Indicar si queda una celda por visitar. TIPO: Booleano.
+       PARÁMETROS: dirPrincipal y dirSecundaria: Dirección.
+       PRECONDICIONES: Direcciones perpendiculares. */
+    return(puedeMover(dirPrincipal) || puedeMover(dirSecundaria))
+}
+
+procedure IrASiguienteCeldaEnUnRecorridoAl_Y_(dirPrincipal, dirSecundaria){
+    /* PROPÓSITO: Avanzar una celda del recorrido.
+       PARÁMETROS: dirPrincipal y dirSecundaria: Dirección.
+       PRECONDICIONES: Direcciones perpendiculares y hay siguiente celda. */
+    if (puedeMover(dirPrincipal)){
+        Mover(dirPrincipal)
+    }else{
+        IrAlBorde(opuesto(dirPrincipal))
+        Mover(dirSecundaria)
+    }
+}

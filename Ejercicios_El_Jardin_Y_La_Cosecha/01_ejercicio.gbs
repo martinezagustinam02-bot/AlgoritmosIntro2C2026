@@ -1,0 +1,37 @@
+program {
+    TratarPlagaConRiegoHacia_(Norte)
+}
+
+procedure TratarPlagaConRiegoHacia_(direccionATratar){
+    /* PROPÓSITO: Trasladar toda el agua inicial a la planta plagada más
+       cercana estrictamente hacia direccionATratar y quitar su plaga.
+       El cabezal termina en el destino. La plaga del origen permanece.
+       PARÁMETROS: direccionATratar: Dirección cardinal.
+       PRECONDICIONES: Modelo válido; origen con plaga; existe una planta
+       plagada en esa dirección (sin contar el origen). Se admite cero agua.
+       Norte es la dirección habitual, pero el parámetro admite las cuatro. */
+    litros := nroBolitas(Azul)
+    repeat(litros){
+        Sacar(Azul)
+    }
+    Mover(direccionATratar)
+    while (not hayPlantaPlagada() && puedeMover(direccionATratar)){
+        Mover(direccionATratar)
+    }
+    repeat(litros){
+        Poner(Azul)
+    }
+    Sacar(Negro)
+}
+
+function hayPlanta(){
+    /* PROPÓSITO: Reconocer una planta válida en la celda. TIPO: Booleano.
+       PARÁMETROS: Ninguno. PRECONDICIONES: Ninguna. */
+    return(nroBolitas(Verde) == 1 || nroBolitas(Verde) == 3 || nroBolitas(Verde) == 5)
+}
+
+function hayPlantaPlagada(){
+    /* PROPÓSITO: Reconocer una planta afectada. TIPO: Booleano.
+       PARÁMETROS: Ninguno. PRECONDICIONES: Modelo válido del jardín. */
+    return(hayPlanta() && hayBolitas(Negro))
+}
