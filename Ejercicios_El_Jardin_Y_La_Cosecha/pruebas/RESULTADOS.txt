@@ -28,4 +28,11 @@ PASS prioridad-sur
 PASS desempate-oeste
 PASS ultima-celda
 PASS unica
-30/30 pruebas ejecutadas correctamente; intérprete 2.0.0
+PASS propuesta-mixta
+PASS propuesta-vacio
+PASS propuesta-unica
+PASS propuesta-columna
+PASS propuesta-fila
+PASS propuesta-sin-plagadas
+PASS propuesta-cero-litros
+37/37 pruebas ejecutadas correctamente; intérprete 2.0.0

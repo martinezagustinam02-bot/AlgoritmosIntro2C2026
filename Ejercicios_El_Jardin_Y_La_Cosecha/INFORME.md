@@ -1,3 +1,5 @@
+> Informe de la primera misión. La finalización, el archivo único y las nuevas pruebas se documentan en [INFORME_FINAL.md](INFORME_FINAL.md).
+
 # El jardín y la cosecha — informe de revisión
 
 ## Alcance y fuentes
@@ -45,7 +47,7 @@ El 9/10/2026 se ejecutaron **30/30 casos correctos** con `gobstones-interpreter`
 
 Todos los conteos conservaron tablero y cabezal. Todos los recorridos ejecutados terminaron sin salir de los límites.
 
-**Gobstones Web:** se ejecutó además el cuerpo de la solución 3 en Gobstones Sr, sobre tablero vacío 4x4 con una planta creada en (1,2). La función devolvió 3, representado por tres rojas colocadas por el programa de prueba en (1,2). Cabezal final (1,2). La función no puso esas rojas: las puso el programa después del conteo. Evidencia visual adjunta a la entrega en Work. No se ejecutó en el navegador la batería completa de los cinco ejercicios; esa batería se ejecutó en el intérprete oficial local. Un primer pegado en el editor añadió texto al programa previo y dio error; se reemplazó el contenido completo y la ejecución posterior produjo el tablero esperado.
+**Gobstones Web:** se ejecutó además el cuerpo de la solución 3 en Gobstones Sr, sobre tablero vacío 4x4 con una planta creada en (1,2). La función devolvió 3, representado por tres rojas colocadas por el programa de prueba en (1,2). Cabezal final (1,2). La función no puso esas rojas: las puso el programa después del conteo. Evidencia visual adjunta a la entrega de la misión 1 en Work. No se ejecutó en el navegador la batería completa de los cinco ejercicios; esa batería se ejecutó en el intérprete oficial local. Un primer pegado en el editor añadió texto al programa previo y dio error; se reemplazó el contenido completo y la ejecución posterior produjo el tablero esperado.
 
 ## Reproducir en Gobstones Web
 
@@ -69,5 +71,5 @@ NODE_PATH=/tmp/pruebas-gobstones/node_modules node Ejercicios_El_Jardin_Y_La_Cos
 
 - Confirmar si el riego debe trasladar toda el agua, conservar la plaga del origen y admitir dosis cero: el PDF no precisa estos detalles. La implementación explicita la interpretación.
 - Confirmar que “más al Sur-Oeste” significa prioridad Sur y luego Oeste. El nombre del procedimiento respalda esa elección; no se emplea distancia geométrica a la esquina.
-- El PDF exige **además una propuesta propia resuelta** y **un archivo único** con nombre `algoritmos-primer-parcial-1C2026-apellido-nombre.gbs`. Esta misión solicitó cinco archivos separados: todavía falta preparar esos requisitos adicionales para la entrega académica completa. Como propuesta posible: calcular litros acumulados en parcelas plagadas para planificar el tratamiento.
+- El PDF exige **además una propuesta propia resuelta** y **un archivo único** con nombre `algoritmos-primer-parcial-1C2026-apellido-nombre.gbs`. Esta misión solicitó cinco archivos separados: estos requisitos fueron completados en la misión 2; ver INFORME_FINAL.md. Como propuesta posible: calcular litros acumulados en parcelas plagadas para planificar el tratamiento.
 - No se completó el formulario, no se envió correo académico y no se fusionará el PR. El trabajo queda para revisión del dueño.

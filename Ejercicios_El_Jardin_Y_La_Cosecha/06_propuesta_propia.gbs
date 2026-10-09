@@ -1,0 +1,76 @@
+program {
+    return(cantidadDeLitrosEnPlantasPlagadas())
+}
+
+function cantidadDeLitrosEnPlantasPlagadas(){
+    /* PROPÓSITO: Calcular los litros acumulados en parcelas con plantas
+       afectadas por plagas, sin importar su estado de crecimiento.
+       PARÁMETROS: Ninguno. TIPO: Número.
+       PRECONDICIONES: Tablero válido según el modelo del jardín.
+       COMPORTAMIENTO: Recorre todas las celdas; suma azules sólo donde hay
+       una planta y plaga. Sin coincidencias devuelve cero. No cambia bolitas
+       ni la posición del cabezal del llamador.
+       JUSTIFICACIÓN: Permite conocer cuánta agua ya está acumulada en las
+       parcelas que necesitan tratamiento y aporta información para planificar
+       el riego. A diferencia del conteo de plantas, suma una magnitud variable
+       (litros) aplicando dos condiciones: presencia de planta y de plaga.
+       No calcula dosis necesarias, eficacia del tratamiento ni agua disponible
+       para trasladar desde otras parcelas. */
+    IrAPrimeraCeldaEnUnRecorridoAl_Y_(Este, Norte)
+    litros := litrosEnPlantaPlagadaAca()
+    while (haySiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)){
+        IrASiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)
+        litros := litros + litrosEnPlantaPlagadaAca()
+    }
+    return(litros)
+}
+
+function litrosEnPlantaPlagadaAca(){
+    /* PROPÓSITO: Devolver los litros de la celda si hay una planta plagada;
+       devolver cero en otro caso.
+       PARÁMETROS: Ninguno. TIPO: Número.
+       PRECONDICIONES: Modelo válido del jardín. No cambia bolitas ni cabezal. */
+    return(choose
+        nroBolitas(Azul) when (hayPlantaPlagada())
+        0 otherwise
+    )
+}
+
+function hayPlanta(){
+    /* PROPÓSITO: Reconocer una planta válida en la celda. TIPO: Booleano.
+       PARÁMETROS: Ninguno. PRECONDICIONES: Ninguna. */
+    return(nroBolitas(Verde) == 1 || nroBolitas(Verde) == 3 || nroBolitas(Verde) == 5)
+}
+
+function hayPlantaPlagada(){
+    /* PROPÓSITO: Reconocer una planta afectada. TIPO: Booleano.
+       PARÁMETROS: Ninguno. PRECONDICIONES: Modelo válido del jardín. */
+    return(hayPlanta() && hayBolitas(Negro))
+}
+
+procedure IrAPrimeraCeldaEnUnRecorridoAl_Y_(dirPrincipal, dirSecundaria){
+    /* PROPÓSITO: Ir a la esquina inicial del recorrido.
+       PARÁMETROS: dirPrincipal y dirSecundaria: Dirección.
+       PRECONDICIONES: Direcciones perpendiculares. */
+    IrAlBorde(opuesto(dirPrincipal))
+    IrAlBorde(opuesto(dirSecundaria))
+}
+
+function haySiguienteCeldaEnUnRecorridoAl_Y_(dirPrincipal, dirSecundaria){
+    /* PROPÓSITO: Indicar si queda una celda por visitar. TIPO: Booleano.
+       PARÁMETROS: dirPrincipal y dirSecundaria: Dirección.
+       PRECONDICIONES: Direcciones perpendiculares. */
+    return(puedeMover(dirPrincipal) || puedeMover(dirSecundaria))
+}
+
+procedure IrASiguienteCeldaEnUnRecorridoAl_Y_(dirPrincipal, dirSecundaria){
+    /* PROPÓSITO: Avanzar una celda del recorrido.
+       PARÁMETROS: dirPrincipal y dirSecundaria: Dirección.
+       PRECONDICIONES: Direcciones perpendiculares y hay siguiente celda. */
+    if (puedeMover(dirPrincipal)){
+        Mover(dirPrincipal)
+    }else{
+        IrAlBorde(opuesto(dirPrincipal))
+        Mover(dirSecundaria)
+    }
+}

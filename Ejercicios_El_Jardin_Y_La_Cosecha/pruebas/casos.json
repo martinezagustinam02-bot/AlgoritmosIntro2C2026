@@ -2902,5 +2902,325 @@
         ]
       ]
     }
+  },
+  {
+    "nombre": "propuesta-mixta",
+    "ejercicio": 6,
+    "tablero": {
+      "width": 4,
+      "height": 3,
+      "head": {
+        "x": 2,
+        "y": 1
+      },
+      "table": [
+        [
+          {
+            "red": 0,
+            "blue": 50,
+            "green": 0,
+            "black": 0
+          },
+          {
+            "red": 0,
+            "blue": 0,
+            "green": 3,
+            "black": 1
+          },
+          {
+            "red": 0,
+            "blue": 40,
+            "green": 0,
+            "black": 1
+          },
+          {
+            "red": 0,
+            "blue": 7,
+            "green": 5,
+            "black": 1
+          }
+        ],
+        [
+          {
+            "red": 0,
+            "blue": 0,
+            "green": 0,
+            "black": 0
+          },
+          {
+            "red": 0,
+            "blue": 4,
+            "green": 3,
+            "black": 1
+          },
+          {
+            "red": 0,
+            "blue": 0,
+            "green": 0,
+            "black": 0
+          },
+          {
+            "red": 0,
+            "blue": 0,
+            "green": 0,
+            "black": 0
+          }
+        ],
+        [
+          {
+            "red": 0,
+            "blue": 2,
+            "green": 1,
+            "black": 1
+          },
+          {
+            "red": 0,
+            "blue": 0,
+            "green": 0,
+            "black": 0
+          },
+          {
+            "red": 0,
+            "blue": 30,
+            "green": 5,
+            "black": 0
+          },
+          {
+            "red": 0,
+            "blue": 0,
+            "green": 0,
+            "black": 0
+          }
+        ]
+      ]
+    },
+    "llamada": "return(cantidadDeLitrosEnPlantasPlagadas())",
+    "esperado": 13
+  },
+  {
+    "nombre": "propuesta-vacio",
+    "ejercicio": 6,
+    "tablero": {
+      "width": 1,
+      "height": 1,
+      "head": {
+        "x": 0,
+        "y": 0
+      },
+      "table": [
+        [
+          {
+            "red": 0,
+            "blue": 0,
+            "green": 0,
+            "black": 0
+          }
+        ]
+      ]
+    },
+    "llamada": "return(cantidadDeLitrosEnPlantasPlagadas())",
+    "esperado": 0
+  },
+  {
+    "nombre": "propuesta-unica",
+    "ejercicio": 6,
+    "tablero": {
+      "width": 1,
+      "height": 1,
+      "head": {
+        "x": 0,
+        "y": 0
+      },
+      "table": [
+        [
+          {
+            "red": 0,
+            "blue": 9,
+            "green": 5,
+            "black": 1
+          }
+        ]
+      ]
+    },
+    "llamada": "return(cantidadDeLitrosEnPlantasPlagadas())",
+    "esperado": 9
+  },
+  {
+    "nombre": "propuesta-columna",
+    "ejercicio": 6,
+    "tablero": {
+      "width": 1,
+      "height": 4,
+      "head": {
+        "x": 0,
+        "y": 2
+      },
+      "table": [
+        [
+          {
+            "red": 0,
+            "blue": 8,
+            "green": 3,
+            "black": 1
+          }
+        ],
+        [
+          {
+            "red": 0,
+            "blue": 40,
+            "green": 5,
+            "black": 0
+          }
+        ],
+        [
+          {
+            "red": 0,
+            "blue": 0,
+            "green": 0,
+            "black": 0
+          }
+        ],
+        [
+          {
+            "red": 0,
+            "blue": 3,
+            "green": 1,
+            "black": 1
+          }
+        ]
+      ]
+    },
+    "llamada": "return(cantidadDeLitrosEnPlantasPlagadas())",
+    "esperado": 11
+  },
+  {
+    "nombre": "propuesta-fila",
+    "ejercicio": 6,
+    "tablero": {
+      "width": 4,
+      "height": 1,
+      "head": {
+        "x": 2,
+        "y": 0
+      },
+      "table": [
+        [
+          {
+            "red": 0,
+            "blue": 6,
+            "green": 1,
+            "black": 1
+          },
+          {
+            "red": 0,
+            "blue": 0,
+            "green": 0,
+            "black": 0
+          },
+          {
+            "red": 0,
+            "blue": 20,
+            "green": 0,
+            "black": 1
+          },
+          {
+            "red": 0,
+            "blue": 10,
+            "green": 5,
+            "black": 1
+          }
+        ]
+      ]
+    },
+    "llamada": "return(cantidadDeLitrosEnPlantasPlagadas())",
+    "esperado": 16
+  },
+  {
+    "nombre": "propuesta-sin-plagadas",
+    "ejercicio": 6,
+    "tablero": {
+      "width": 2,
+      "height": 2,
+      "head": {
+        "x": 1,
+        "y": 1
+      },
+      "table": [
+        [
+          {
+            "red": 0,
+            "blue": 0,
+            "green": 0,
+            "black": 0
+          },
+          {
+            "red": 0,
+            "blue": 12,
+            "green": 0,
+            "black": 1
+          }
+        ],
+        [
+          {
+            "red": 0,
+            "blue": 9,
+            "green": 3,
+            "black": 0
+          },
+          {
+            "red": 0,
+            "blue": 0,
+            "green": 0,
+            "black": 0
+          }
+        ]
+      ]
+    },
+    "llamada": "return(cantidadDeLitrosEnPlantasPlagadas())",
+    "esperado": 0
+  },
+  {
+    "nombre": "propuesta-cero-litros",
+    "ejercicio": 6,
+    "tablero": {
+      "width": 2,
+      "height": 2,
+      "head": {
+        "x": 1,
+        "y": 0
+      },
+      "table": [
+        [
+          {
+            "red": 0,
+            "blue": 0,
+            "green": 0,
+            "black": 0
+          },
+          {
+            "red": 0,
+            "blue": 0,
+            "green": 5,
+            "black": 1
+          }
+        ],
+        [
+          {
+            "red": 0,
+            "blue": 0,
+            "green": 1,
+            "black": 1
+          },
+          {
+            "red": 0,
+            "blue": 0,
+            "green": 0,
+            "black": 0
+          }
+        ]
+      ]
+    },
+    "llamada": "return(cantidadDeLitrosEnPlantasPlagadas())",
+    "esperado": 0
   }
 ]

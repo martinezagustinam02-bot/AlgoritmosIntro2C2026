@@ -1,0 +1,269 @@
+/*
+ALGORITMOS - PRIMER PARCIAL - Agustín Martinez
+Tema 3: El Jardín y la Cosecha. Cinco ejercicios y propuesta propia.
+
+MODELO: Tablero rectangular no vacío. Cada celda representa una parcela.
+Verdes: 0 sin planta, 1 brote, 3 planta en crecimiento, 5 frutos maduros.
+Negro: 0 sin plaga, 1 con plaga. Azules: litros acumulados (cero o más).
+Una marca negra sin verdes no representa una planta. Rojo no modela cultivos.
+
+USO: Este único archivo contiene todas las declaraciones necesarias.
+El program inicial consulta los litros en plantas plagadas: sirve con cualquier
+jardín válido, incluso un tablero vacío 1x1 (resultado esperado: 0).
+Ejemplo más informativo: cargar pruebas/propuesta-mixta.gbb; resultado: 13.
+No modifica el tablero inicial ni el cabezal.
+
+Para probar otra tarea, reemplazar sólo el contenido del único program:
+  TratarPlagaConRiegoHacia_(Norte)
+    Requiere origen con plaga y otra planta plagada hacia Norte.
+  return(cantidadDePlantas(3, False))
+    Estado 1/3/5; True con plaga, False saludable.
+  return(cantidadDeSectoresSinCultivar())
+  return(cantidadDePlantasPlagadas())
+  IrAParcelaConFrutosMasAlSur()
+    Requiere al menos una planta con 5 verdes.
+  return(cantidadDeLitrosEnPlantasPlagadas())
+No cargar las soluciones individuales simultáneamente con este archivo.
+
+DECISIONES DEL ENUNCIADO:
+- El tratamiento traslada toda el agua inicial y elimina la plaga del destino;
+  no elimina la del origen. El PDF no establece una dosis mínima.
+- La búsqueda de frutos prioriza Sur y desempata por Oeste, por filas.
+- Las funciones sólo consultan: Gobstones restaura el cabezal al retornar.
+*/
+
+program {
+IrAlBorde(Sur)
+IrAlBorde(Oeste)
+repeat(0) { Mover(Este) }
+repeat(0) { Mover(Norte) }
+repeat(1) { Poner(Verde) }
+repeat(2) { Poner(Azul) }
+repeat(1) { Poner(Negro) }
+IrAlBorde(Sur)
+IrAlBorde(Oeste)
+repeat(2) { Mover(Este) }
+repeat(0) { Mover(Norte) }
+repeat(5) { Poner(Verde) }
+repeat(30) { Poner(Azul) }
+repeat(0) { Poner(Negro) }
+IrAlBorde(Sur)
+IrAlBorde(Oeste)
+repeat(1) { Mover(Este) }
+repeat(1) { Mover(Norte) }
+repeat(3) { Poner(Verde) }
+repeat(4) { Poner(Azul) }
+repeat(1) { Poner(Negro) }
+IrAlBorde(Sur)
+IrAlBorde(Oeste)
+repeat(0) { Mover(Este) }
+repeat(2) { Mover(Norte) }
+repeat(0) { Poner(Verde) }
+repeat(50) { Poner(Azul) }
+repeat(0) { Poner(Negro) }
+IrAlBorde(Sur)
+IrAlBorde(Oeste)
+repeat(1) { Mover(Este) }
+repeat(2) { Mover(Norte) }
+repeat(3) { Poner(Verde) }
+repeat(0) { Poner(Azul) }
+repeat(1) { Poner(Negro) }
+IrAlBorde(Sur)
+IrAlBorde(Oeste)
+repeat(2) { Mover(Este) }
+repeat(2) { Mover(Norte) }
+repeat(0) { Poner(Verde) }
+repeat(40) { Poner(Azul) }
+repeat(1) { Poner(Negro) }
+IrAlBorde(Sur)
+IrAlBorde(Oeste)
+repeat(3) { Mover(Este) }
+repeat(2) { Mover(Norte) }
+repeat(5) { Poner(Verde) }
+repeat(7) { Poner(Azul) }
+repeat(1) { Poner(Negro) }
+IrAlBorde(Sur)
+IrAlBorde(Oeste)
+repeat(2) { Mover(Este) }
+Mover(Norte)
+repeat(cantidadDeLitrosEnPlantasPlagadas()) { Poner(Rojo) }
+}
+
+procedure TratarPlagaConRiegoHacia_(direccionATratar){
+    /* PROPÓSITO: Trasladar toda el agua inicial a la planta plagada más
+       cercana estrictamente hacia direccionATratar y quitar su plaga.
+       El cabezal termina en el destino. La plaga del origen permanece.
+       PARÁMETROS: direccionATratar: Dirección cardinal.
+       PRECONDICIONES: Modelo válido; origen con plaga; existe una planta
+       plagada en esa dirección (sin contar el origen). Se admite cero agua.
+       Norte es la dirección habitual, pero el parámetro admite las cuatro. */
+    litros := nroBolitas(Azul)
+    repeat(litros){
+        Sacar(Azul)
+    }
+    Mover(direccionATratar)
+    while (not hayPlantaPlagada() && puedeMover(direccionATratar)){
+        Mover(direccionATratar)
+    }
+    repeat(litros){
+        Poner(Azul)
+    }
+    Sacar(Negro)
+}
+
+function hayPlanta(){
+    /* PROPÓSITO: Reconocer una planta válida en la celda. TIPO: Booleano.
+       PARÁMETROS: Ninguno. PRECONDICIONES: Ninguna. */
+    return(nroBolitas(Verde) == 1 || nroBolitas(Verde) == 3 || nroBolitas(Verde) == 5)
+}
+
+function hayPlantaPlagada(){
+    /* PROPÓSITO: Reconocer una planta afectada. TIPO: Booleano.
+       PARÁMETROS: Ninguno. PRECONDICIONES: Modelo válido del jardín. */
+    return(hayPlanta() && hayBolitas(Negro))
+}
+
+function cantidadDePlantas(estadoDeCrecimiento, conPlaga){
+    /* PROPÓSITO: Contar las plantas del estado y salud indicados.
+       PARÁMETROS: estadoDeCrecimiento: Número (1, 3 o 5).
+                   conPlaga: Booleano (True: plagadas; False: saludables).
+       PRECONDICIONES: Modelo válido y estado 1, 3 o 5. TIPO: Número.
+       No cambia bolitas; el entorno restaura el cabezal al salir de la función. */
+    IrAPrimeraCeldaEnUnRecorridoAl_Y_(Este, Norte)
+    cantidad := unoSiHayPlantaDeEstado_YPlaga_(estadoDeCrecimiento, conPlaga)
+    while (haySiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)){
+        IrASiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)
+        cantidad := cantidad + unoSiHayPlantaDeEstado_YPlaga_(estadoDeCrecimiento, conPlaga)
+    }
+    return(cantidad)
+}
+
+function unoSiHayPlantaDeEstado_YPlaga_(estadoDeCrecimiento, conPlaga){
+    /* PROPÓSITO: Devolver 1 si la celda coincide, 0 en otro caso.
+       PARÁMETROS: estadoDeCrecimiento: Número; conPlaga: Booleano.
+       PRECONDICIONES: Modelo válido y estado 1, 3 o 5. TIPO: Número. */
+    return(choose
+        1 when (nroBolitas(Verde) == estadoDeCrecimiento && hayBolitas(Negro) == conPlaga)
+        0 otherwise
+    )
+}
+
+procedure IrAPrimeraCeldaEnUnRecorridoAl_Y_(dirPrincipal, dirSecundaria){
+    /* PROPÓSITO: Ir a la esquina inicial del recorrido.
+       PARÁMETROS: dirPrincipal y dirSecundaria: Dirección.
+       PRECONDICIONES: Direcciones perpendiculares. */
+    IrAlBorde(opuesto(dirPrincipal))
+    IrAlBorde(opuesto(dirSecundaria))
+}
+
+function haySiguienteCeldaEnUnRecorridoAl_Y_(dirPrincipal, dirSecundaria){
+    /* PROPÓSITO: Indicar si queda una celda por visitar. TIPO: Booleano.
+       PARÁMETROS: dirPrincipal y dirSecundaria: Dirección.
+       PRECONDICIONES: Direcciones perpendiculares. */
+    return(puedeMover(dirPrincipal) || puedeMover(dirSecundaria))
+}
+
+procedure IrASiguienteCeldaEnUnRecorridoAl_Y_(dirPrincipal, dirSecundaria){
+    /* PROPÓSITO: Avanzar una celda del recorrido.
+       PARÁMETROS: dirPrincipal y dirSecundaria: Dirección.
+       PRECONDICIONES: Direcciones perpendiculares y hay siguiente celda. */
+    if (puedeMover(dirPrincipal)){
+        Mover(dirPrincipal)
+    }else{
+        IrAlBorde(opuesto(dirPrincipal))
+        Mover(dirSecundaria)
+    }
+}
+
+function cantidadDeSectoresSinCultivar(){
+    /* PROPÓSITO: Contar columnas sin plantas ni agua.
+       PARÁMETROS: Ninguno. PRECONDICIONES: Modelo válido. TIPO: Número.
+       No modifica bolitas. Cada columna se cuenta una sola vez. */
+    IrAlBorde(Oeste)
+    cantidad := unoSiColumnaSinCultivar()
+    while (puedeMover(Este)){
+        Mover(Este)
+        cantidad := cantidad + unoSiColumnaSinCultivar()
+    }
+    return(cantidad)
+}
+
+function unoSiColumnaSinCultivar(){
+    /* PROPÓSITO: Devolver 1 si toda la columna carece de planta y riego.
+       PARÁMETROS: Ninguno. PRECONDICIONES: Modelo válido. TIPO: Número.
+       Negro o rojo solos no cuentan como planta ni agua.
+       Al terminar la función el entorno restaura el cabezal del llamador. */
+    IrAlBorde(Sur)
+    sinCultivar := not hayPlanta() && not hayBolitas(Azul)
+    while (puedeMover(Norte)){
+        Mover(Norte)
+        sinCultivar := sinCultivar && not hayPlanta() && not hayBolitas(Azul)
+    }
+    return(choose
+        1 when (sinCultivar)
+        0 otherwise
+    )
+}
+
+function cantidadDePlantasPlagadas(){
+    /* PROPÓSITO: Contar plantas plagadas de los tres estados.
+       PARÁMETROS: Ninguno. PRECONDICIONES: Modelo válido. TIPO: Número.
+       Reutiliza cantidadDePlantas; no cuenta una marca negra sin planta. */
+    return(cantidadDePlantas(1, True) + cantidadDePlantas(3, True) + cantidadDePlantas(5, True))
+}
+
+procedure IrAParcelaConFrutosMasAlSur(){
+    /* PROPÓSITO: Ir a la planta madura de la fila más al Sur;
+       si hay varias en esa fila, elegir la más al Oeste. No cambia bolitas.
+       PARÁMETROS: Ninguno.
+       PRECONDICIONES: Modelo válido y existe al menos una planta con 5 verdes.
+       La salud no es filtro: la consigna sólo exige frutos maduros.
+       Sin una planta madura, el recorrido termina en NE sin salir del tablero,
+       pero no satisface el propósito (entrada fuera de precondición). */
+    IrAPrimeraCeldaEnUnRecorridoAl_Y_(Este, Norte)
+    while (not hayFrutosMaduros() && haySiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)){
+        IrASiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)
+    }
+}
+
+function hayFrutosMaduros(){
+    /* PROPÓSITO: Indicar si hay planta madura. TIPO: Booleano.
+       PARÁMETROS: Ninguno. PRECONDICIONES: Ninguna. */
+    return(nroBolitas(Verde) == 5)
+}
+
+// PROPUESTA PROPIA
+
+function cantidadDeLitrosEnPlantasPlagadas(){
+    /* PROPÓSITO: Calcular los litros acumulados en parcelas con plantas
+       afectadas por plagas, sin importar su estado de crecimiento.
+       PARÁMETROS: Ninguno. TIPO: Número.
+       PRECONDICIONES: Tablero válido según el modelo del jardín.
+       COMPORTAMIENTO: Recorre todas las celdas; suma azules sólo donde hay
+       una planta y plaga. Sin coincidencias devuelve cero. No cambia bolitas
+       ni la posición del cabezal del llamador.
+       JUSTIFICACIÓN: Permite conocer cuánta agua ya está acumulada en las
+       parcelas que necesitan tratamiento y aporta información para planificar
+       el riego. A diferencia del conteo de plantas, suma una magnitud variable
+       (litros) aplicando dos condiciones: presencia de planta y de plaga.
+       No calcula dosis necesarias, eficacia del tratamiento ni agua disponible
+       para trasladar desde otras parcelas. */
+    IrAPrimeraCeldaEnUnRecorridoAl_Y_(Este, Norte)
+    litros := litrosEnPlantaPlagadaAca()
+    while (haySiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)){
+        IrASiguienteCeldaEnUnRecorridoAl_Y_(Este, Norte)
+        litros := litros + litrosEnPlantaPlagadaAca()
+    }
+    return(litros)
+}
+
+function litrosEnPlantaPlagadaAca(){
+    /* PROPÓSITO: Devolver los litros de la celda si hay una planta plagada;
+       devolver cero en otro caso.
+       PARÁMETROS: Ninguno. TIPO: Número.
+       PRECONDICIONES: Modelo válido del jardín. No cambia bolitas ni cabezal. */
+    return(choose
+        nroBolitas(Azul) when (hayPlantaPlagada())
+        0 otherwise
+    )
+}
